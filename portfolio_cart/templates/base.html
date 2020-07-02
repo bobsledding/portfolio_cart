@@ -16,12 +16,14 @@
 		<!-- global styles -->
 		<link href="{% static 'themes/css/flexslider.css' %}" rel="stylesheet"/>
 		<link href="{% static 'themes/css/main.css' %}" rel="stylesheet"/>
+		<link href="{% static 'themes/css/jquery.fancybox.css' %}" rel="stylesheet"/>
 
 		<!-- scripts -->
 		<script src="{% static 'themes/js/jquery-1.7.2.min.js' %}"></script>
 		<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 		<script src="{% static 'themes/js/superfish.js' %}"></script>
 		<script src="{% static 'themes/js/jquery.scrolltotop.js' %}"></script>
+		<script src="{% static 'themes/js/jquery.fancybox.js' %}"></script>
 		<!--[if lt IE 9]>
 			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 			<script src="{% static 'js/respond.min.js' %}"></script>
@@ -150,6 +152,23 @@
 						controlNav: false,
 						directionNav: true,
 						controlsContainer: ".flex-container" // the container that holds the flexslider
+					});
+				});
+				$(function () {
+					$('#myTab a:first').tab('show');
+					$('#myTab a').click(function (e) {
+						e.preventDefault();
+						$(this).tab('show');
+					})
+				})
+				$(document).ready(function() {
+					$('.thumbnail').fancybox({
+						openEffect  : 'none',
+						closeEffect : 'none'
+					});
+
+					$('#myCarousel-2').carousel({
+						interval: 2500
 					});
 				});
 			});
