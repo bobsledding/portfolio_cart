@@ -19,8 +19,8 @@
 	</div>
 </section>
 <section class="header_text">
-	We stand for top quality templates. Our genuine developers always optimized bootstrap commercial templates.
-	<br/>Don't miss to use our cheap abd best bootstrap templates.
+	這裡賣一些我個人的私人用品
+	<br/>可以試著加入購物車並且結帳，不過實際購買還是親洽本人。
 </section>
 <section class="main-content">
 	<div class="row">
@@ -37,76 +37,31 @@
 						<div class="carousel-inner">
 							<div class="active item">
 								<ul class="thumbnails">
+								{% for product in feature_products|slice:":4" %}
 									<li class="span3">
 										<div class="product-box">
 											<span class="sale_tag"></span>
-											<p><a href=""><img src="{% static 'themes/images/ladies/1.jpg' %}" alt="" /></a></p>
-											<a href="" class="title">Ut wisi enim ad</a><br/>
-											<a href="" class="category">Commodo consequat</a>
-											<p class="price">$17.25</p>
+											<p><a href="{% url 'products:detail' product.id %}"><img src="{{ product.image_set.first.file.url }}" alt="" /></a></p>
+											<a href="{% url 'products:detail' product.id %}" class="title">{{ product.title }}</a><br/>
+											<a href="{% url 'products:detail' product.id %}" class="category">{{ product.cat }}</a>
+											<p class="price">${{ product.price }}</p>
 										</div>
 									</li>
-									<li class="span3">
-										<div class="product-box">
-											<span class="sale_tag"></span>
-											<p><a href=""><img src="{% static 'themes/images/ladies/2.jpg' %}" alt="" /></a></p>
-											<a href="" class="title">Quis nostrud exerci tation</a><br/>
-											<a href="" class="category">Quis nostrud</a>
-											<p class="price">$32.50</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/3.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Know exactly turned</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$14.20</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/4.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">You think fast</a><br/>
-											<a href="products.html" class="category">World once</a>
-											<p class="price">$31.45</p>
-										</div>
-									</li>
+								{% endfor %}
 								</ul>
 							</div>
 							<div class="item">
 								<ul class="thumbnails">
+								{% for product in feature_products|slice:"4:8" %}
 									<li class="span3">
 										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/5.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Know exactly</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$22.30</p>
+											<p><a href="{% url 'products:detail' product.id %}"><img src="{{ product.image_set.first.file.url }}" alt="" /></a></p>
+											<a href="{% url 'products:detail' product.id %}" class="title">{{ product.title }}</a><br/>
+											<a href="{% url 'products:detail' product.id %}" class="category">{{ product.cat }}</a>
+											<p class="price">${{ product.price }}</p>
 										</div>
 									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/6.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Ut wisi enim ad</a><br/>
-											<a href="products.html" class="category">Commodo consequat</a>
-											<p class="price">$40.25</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/7.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">You think water</a><br/>
-											<a href="products.html" class="category">World once</a>
-											<p class="price">$10.45</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/ladies/8.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Quis nostrud exerci</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$35.50</p>
-										</div>
-									</li>
+								{% endfor %}
 								</ul>
 							</div>
 						</div>
@@ -126,75 +81,31 @@
 						<div class="carousel-inner">
 							<div class="active item">
 								<ul class="thumbnails">
+								{% for product in feature_products|slice:":4" %}
 									<li class="span3">
 										<div class="product-box">
 											<span class="sale_tag"></span>
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware2.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Ut wisi enim ad</a><br/>
-											<a href="products.html" class="category">Commodo consequat</a>
-											<p class="price">$25.50</p>
+											<p><a href="{% url 'products:detail' product.id %}"><img src="{{ product.image_set.first.file.url }}" alt="" /></a></p>
+											<a href="{% url 'products:detail' product.id %}" class="title">{{ product.title }}</a><br/>
+											<a href="{% url 'products:detail' product.id %}" class="category">{{ product.cat }}</a>
+											<p class="price">${{ product.price }}</p>
 										</div>
 									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware1.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Quis nostrud exerci tation</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$17.55</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware6.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Know exactly turned</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$25.30</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware5.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">You think fast</a><br/>
-											<a href="products.html" class="category">World once</a>
-											<p class="price">$25.60</p>
-										</div>
-									</li>
+								{% endfor %}
 								</ul>
 							</div>
 							<div class="item">
 								<ul class="thumbnails">
+								{% for product in feature_products|slice:"4:8" %}
 									<li class="span3">
 										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware4.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Know exactly</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$45.50</p>
+											<p><a href="{% url 'products:detail' product.id %}"><img src="{{ product.image_set.first.file.url }}" alt="" /></a></p>
+											<a href="{% url 'products:detail' product.id %}" class="title">{{ product.title }}</a><br/>
+											<a href="{% url 'products:detail' product.id %}" class="category">{{ product.cat }}</a>
+											<p class="price">${{ product.price }}</p>
 										</div>
 									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware3.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Ut wisi enim ad</a><br/>
-											<a href="products.html" class="category">Commodo consequat</a>
-											<p class="price">$33.50</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware2.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">You think water</a><br/>
-											<a href="products.html" class="category">World once</a>
-											<p class="price">$45.30</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<p><a href="product_detail.html"><img src="{% static 'themes/images/cloth/bootstrap-women-ware1.jpg' %}" alt="" /></a></p>
-											<a href="product_detail.html" class="title">Quis nostrud exerci</a><br/>
-											<a href="products.html" class="category">Quis nostrud</a>
-											<p class="price">$25.20</p>
-										</div>
-									</li>
+								{% endfor %}
 								</ul>
 							</div>
 						</div>
