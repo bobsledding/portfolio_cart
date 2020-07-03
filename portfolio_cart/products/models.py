@@ -13,6 +13,9 @@ class Product(models.Model):
     datetime_create = models.DateTimeField('建立日期',auto_now_add=True)
     datetime_edit = models.DateTimeField('修改日期',auto_now=True)
 
+    def __str__(self):
+        return '%s-%s-$%s-庫存:%s' % (self.cat, self.title, self.price, self.stock)
+
 class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     file = models.ImageField('檔案',upload_to='product_images')

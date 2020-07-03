@@ -52,25 +52,12 @@
 		<div id="wrapper" class="container">
 			<section class="navbar main-menu">
 				<div class="navbar-inner main-menu">
-					<a href="index.html" class="logo pull-left"><img src="{% static 'themes/images/logo.png' %}" class="site_logo" alt=""></a>
+					<a href="{% url 'index' %}" class="logo pull-left"><img src="{% static 'themes/images/logo.png' %}" class="site_logo" alt=""></a>
 					<nav id="menu" class="pull-right">
 						<ul>
-							<li><a href="">Woman</a>
-								<ul>
-									<li><a href="">Lacinia nibh</a></li>
-									<li><a href="">Eget molestie</a></li>
-									<li><a href="">Varius purus</a></li>
-								</ul>
-							</li>
-							<li><a href="">Man</a></li>
-							<li><a href="">Sport</a>
-								<ul>
-									<li><a href="">Gifts and Tech</a></li>
-									<li><a href="">Ties and Hats</a></li>
-									<li><a href="">Cold Weather</a></li>
-								</ul>
-							</li>
-							<li><a href="">Hangbag</a></li>
+						{% for cat in product_cats %}
+							<li><a href="">{{ cat }}</a></li>
+						{% endfor %}
 							<li><a href="">Best Seller</a></li>
 							<li><a href="">Top Seller</a></li>
 						</ul>
@@ -107,7 +94,7 @@
 					<div class="span3">
 						<h4>Navigation</h4>
 						<ul class="nav">
-							<li><a href="./index.html">Homepage</a></li>
+							<li><a href="{% url 'index' %}">Homepage</a></li>
 							<li><a href="./about.html">About Us</a></li>
 							<li><a href="./contact.html">Contac Us</a></li>
 							<li><a href="./cart.html">Your Cart</a></li>
