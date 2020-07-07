@@ -42,7 +42,7 @@
 						<ul class="user-menu">
 						{% if user.is_authenticated %}
 							<li><a href="#">{{ user.username }}</a></li>
-							<li><a href="">購物車</a></li>
+							<li><a href="{% url 'cart:index' %}">購物車</a></li>
 							<li><a href="{% url 'logout' %}">登出</a></li>
 						{% else %}
 							<li><a href="{% url 'login' %}">登入</a></li>

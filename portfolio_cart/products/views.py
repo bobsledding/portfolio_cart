@@ -7,7 +7,7 @@ def index(request):
 
 def detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'products/detail.html', {'product': product})
+    return render(request, 'products/detail.html', {'product': product, 'stock_range': range(1, product.stock+1)})
 
 
 def cat(request, product_cat):
