@@ -9,6 +9,23 @@ from products.models import Product
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through='Cart_product')
+    def get_total(self):
+        total = 0
+        for cart_product in self.cart_product_set.all():
+            total += cart_product.temp_price * cart_product.quantity
+        return total
+
+    def get_product_total(self):
+        total = 0
+        for cart_product in self.cart_product_set.all():
+            total += cart_product.product.price * cart_product.quantity
+        return total
+
+    def has_invalid(self):
+        for cart_product in self.cart_product_set.all():
+            if not cart_product.is_valid():
+                return True
+        return False
 
 @receiver(post_save, sender=User)
 def create_user_cart(sender, instance, created, **kwargs):
@@ -21,3 +38,17 @@ class Cart_product(models.Model):
     temp_title = models.CharField('暫存商品名',max_length=200)
     temp_price = models.PositiveIntegerField('暫存價格',default=99999)
     quantity = models.PositiveSmallIntegerField('數量',default=0)
+
+    # test needed
+    def is_valid(self):
+        if self.temp_price != self.product.price:
+            return False
+        if self.quantity > self.product.stock:
+            return False
+        return True
+
+    def get_subtotal(self):
+        return self.quantity * self.temp_price
+
+    def get_product_subtotal(self):
+        return self.quantity * self.product.price

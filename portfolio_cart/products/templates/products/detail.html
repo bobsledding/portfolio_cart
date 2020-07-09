@@ -26,8 +26,8 @@
 					<form class="form-inline">
 						<label>Qty:</label>
 						<select id="add_quantity">
-    					{% for quantity_value in stock_range %}
-							<option value="{{ quantity_value }}">{{ quantity_value }}</option>
+    					{% for i in stock_range %}
+							<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
 						{% endfor %}
 						</select>
 						<button id="submit" class="btn btn-inverse" type="button">Add to cart</button>
