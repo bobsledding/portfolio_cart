@@ -23,7 +23,7 @@ class Cart(models.Model):
 
     def has_invalid(self):
         for cart_product in self.cart_product_set.all():
-            if not cart_product.is_valid():
+            if not cart_product.is_buyable():
                 return True
         return False
 
@@ -40,7 +40,7 @@ class Cart_product(models.Model):
     quantity = models.PositiveSmallIntegerField('數量',default=0)
 
     # test needed
-    def is_valid(self):
+    def is_buyable(self):
         if self.temp_price != self.product.price:
             return False
         if self.quantity > self.product.stock:

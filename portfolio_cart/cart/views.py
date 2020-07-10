@@ -51,3 +51,19 @@ def add_to_cart(request):
     response_dict['success'] = 1
 
     return JsonResponse(response_dict)
+
+@require_POST
+def remove_from_cart(request):
+
+    user_cart = request.user.cart
+    cpid = int(request.POST['cpid'])
+    response_dict = {
+        'success' : 0,
+    }
+    if user_cart.cart_product_set.filter(pk=cpid).exists():
+        the_cart_product = Cart_product.objects.get(pk=cpid)
+        the_product = the_cart_product.product
+        user_cart.products.remove(the_product)
+        response_dict['success'] = 1
+
+    return JsonResponse(response_dict)
