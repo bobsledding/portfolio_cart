@@ -27,6 +27,9 @@ class Cart(models.Model):
                 return True
         return False
 
+    def clear_cart(self):
+        self.cart_product_set.all().delete()
+
 @receiver(post_save, sender=User)
 def create_user_cart(sender, instance, created, **kwargs):
     if created:
@@ -41,6 +44,7 @@ class Cart_product(models.Model):
 
     # test needed
     def is_buyable(self):
+        # 若價格無異動&&庫存夠，return True
         if self.temp_price != self.product.price:
             return False
         if self.quantity > self.product.stock:

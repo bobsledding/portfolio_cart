@@ -10,6 +10,7 @@
 	<div class="row">
 		<div class="span9">
 			<h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
+			{% if user.cart.cart_product_set.all %}
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -40,7 +41,7 @@
 						{% endif %}
 						</td>
 						<td>
-						{% if cart_product.quantity == cart_product.product.stock %}
+						{% if cart_product.quantity <= cart_product.product.stock %}
 							{{ cart_product.quantity }}
 						{% else %}
 							<del style="color:red">{{ cart_product.quantity }}</del>
@@ -79,16 +80,6 @@
 						<td>
 							<button class="remove_from_cart_button" data-cpid="{{ cart_product.id }}">取消</button>
 						</td>
-					</tr>
-				{% empty %}
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td></td>
-						<td><strong>購物車裡沒有任何商品，快去選購！</strong></td>
 					</tr>
 				{% endfor %}
 				</tbody>
@@ -145,22 +136,26 @@
 			<hr>
 			<p class="cart-total right">
 				<strong>總計:</strong>
-			{% if user.cart.has_invalid %}
+				{% if user.cart.has_invalid %}
 				<del style="color:red;">{{ user.cart.get_total|intcomma:False }}</del>
 				<br>
-				{{ user.cart.get_product_total|intcomma:False }}
+					{{ user.cart.get_product_total|intcomma:False }}
 				<br>
 				<strong style="color:red;">請先刪除價格異動或庫存不足商品再進行結帳</strong>
-			{% else %}
+				{% else %}
 				{{ user.cart.get_total|intcomma:False }}
-			{% endif %}
+				{% endif %}
 			</p>
 			<hr/>
 			<p class="buttons center">
-				<button class="btn" type="button">Update</button>
-				<button class="btn" type="button">Continue</button>
-				<button class="btn btn-inverse" type="submit" id="checkout">Checkout</button>
+				<form action="{% url 'cart:clear' %}" method="GET">
+					<button class="btn" type="submit">清空購物車</button>
+				</form>
+				<button class="btn btn-inverse" type="submit" id="checkout">前往付款</button>
 			</p>
+			{% else %}
+			<strong>購物車裡沒有任何商品，快去選購！</strong>
+			{% endif %}
 		</div>
 		<div class="span3 col">
 		</div>
