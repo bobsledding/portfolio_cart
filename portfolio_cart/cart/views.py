@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from products.models import Product
 from .models import Cart, Cart_product
@@ -60,10 +60,20 @@ def remove_from_cart(request):
     response_dict = {
         'success' : 0,
     }
+    """
     if user_cart.cart_product_set.filter(pk=cpid).exists():
         the_cart_product = Cart_product.objects.get(pk=cpid)
         the_product = the_cart_product.product
-        user_cart.products.remove(the_product)
+        user_cart.products.remove(the_product) # 這個是移除關聯
+        response_dict['success'] = 1
+    """
+    deleting_result = user_cart.cart_product_set.filter(pk=cpid).delete() #這才是刪除物件本身
+    if deleting_result[0] == 1:
         response_dict['success'] = 1
 
     return JsonResponse(response_dict)
+
+def clear_cart(request):
+
+    request.user.cart.clear_cart()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
