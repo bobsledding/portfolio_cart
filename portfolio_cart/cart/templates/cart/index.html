@@ -151,7 +151,9 @@
 				<form action="{% url 'cart:clear' %}" method="GET">
 					<button class="btn" type="submit">清空購物車</button>
 				</form>
-				<button class="btn btn-inverse" type="submit" id="checkout">前往付款</button>
+				<form action="{% url 'order:ecpay_view' %}" method="GET">
+					<button class="btn btn-inverse" type="submit" id="checkout">前往付款</button>
+				</form>
 			</p>
 			{% else %}
 			<strong>購物車裡沒有任何商品，快去選購！</strong>
