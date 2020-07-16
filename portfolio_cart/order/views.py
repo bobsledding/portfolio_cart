@@ -31,10 +31,11 @@ def ecpay_view(request):
     )
     #create order with cart
     #create payment
-    return HttpResponse(main(the_order.id))
+    return HttpResponse(main(the_order.id,request))
 
+@csrf_exempt
 def result(request):
-    return HttpResponse('nothing here.(result)')
+    return HttpResponse(request.POST['RtnMsg'])
 
 def detail(request):
     return HttpResponse('nothing here.(detail)')
