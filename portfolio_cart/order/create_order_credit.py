@@ -105,8 +105,6 @@ def main(order_id,request):
         # 產生綠界訂單所需參數
         final_order_params = ecpay_payment_sdk.create_order(order_params)
         checkMacValue = final_order_params['CheckMacValue']
-        the_payment.check_mac_value = checkMacValue
-        the_payment.save()
         # 產生 html 的 form 格式
         action_url = 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5'  # 測試環境
         # action_url = 'https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5' # 正式環境
@@ -115,3 +113,15 @@ def main(order_id,request):
         return html
     except Exception as error:
         print('An exception happened: ' + str(error))
+
+def is_check_mac_value_match(params):
+    ecpay_payment_sdk = module.ECPayPaymentSdk(
+        MerchantID='2000132',
+        HashKey='5294y06JbISpM5x9',
+        HashIV='v77hoKGq4kWxNNIS'
+    )
+    check_mac_value = params.pop('CheckMacValue')
+    if check_mac_value == ecpay_payment_sdk.generate_check_value(params):
+        return True
+
+    return False

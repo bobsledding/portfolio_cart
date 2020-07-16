@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from .create_order_credit import main
+from .create_order_credit import main, is_check_mac_value_match
 from .models import Order, Payment
 from cart.models import Cart
 from django.core import serializers
@@ -11,7 +11,7 @@ from django.core import serializers
 
 @csrf_exempt
 def ecpay_view(request):
-    #建立訂單
+    # 建立訂單
     cart_total = request.user.cart.get_total()
     product_title_list = []
     for the_cart_product in request.user.cart.cart_product_set.all():
@@ -29,25 +29,37 @@ def ecpay_view(request):
         order = the_order,
         trade_no = the_order.generate_trade_no(),
     )
-    #create order with cart
-    #create payment
+    # clear cart
+    request.user.cart.clear_cart()
+
     return HttpResponse(main(the_order.id,request))
 
 @csrf_exempt
 def result(request):
-    return HttpResponse(request.POST['RtnMsg'])
+    return HttpResponse('' + request.POST['RtnMsg']+'____'+request.POST['CheckMacValue'])
 
-def detail(request):
-    return HttpResponse('nothing here.(detail)')
+def index(request):
+
+    orders = request.user.order_set.all()
+    return render(request, 'order/index.html', {'orders': orders})
 
 @csrf_exempt
 def receive_from_ecpay(request):
     print('進入view了')
-    trade_no = request.POST['MerchantTradeNo']
+    post_data = request.POST.dict()
+    merchant_trade_no = post_data['MerchantTradeNo']
     try:
-        the_payment = Payment.objects.filter(check_mac_value=request.POST['CheckMacValue'])
-        the_payment.is_success = True
-        print('交易成功！')
+        the_payment = Payment.objects.filter(trade_no=merchant_trade_no).get()
+        if int(post_data['RtnCode']) == 1:
+            the_payment.is_success = True
+            the_payment.save()
+            print('交易成功！')
+
+        if is_check_mac_value_match(post_data):
+            print('檢查碼正確！')
+        else:
+            print('檢查碼錯誤！')
+            print(post_data)
     except Payment.DoesNotExist:
         print('付款紀錄不存在！')
 
