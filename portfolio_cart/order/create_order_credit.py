@@ -12,7 +12,7 @@ spec.loader.exec_module(module)
 from django.urls import reverse
 from datetime import datetime
 
-def main(order_id):
+def main(order_id,request):
 
     #從新建的order取出資料
     the_order = Order.objects.get(pk=order_id)
@@ -27,18 +27,18 @@ def main(order_id):
         'TotalAmount': the_order.total_amount,  # 商品金額
         'TradeDesc': '私密好物販售',  # 商品描述
         'ItemName': the_order.product_title,  # 商品名稱，用井字號當分行
-        'ReturnURL': reverse('order:receive_from_ecpay'),  # 顧客填完付款資料後的跳轉頁面
+        'ReturnURL': request.build_absolute_uri(reverse('order:receive_from_ecpay')),  # 顧客填完付款資料後的跳轉頁面
         'ChoosePayment': 'Credit',  # 顧客的付費方式
 
         # 結帳後，先導到 OrderResultURL，從綠界頁面跳回的頁面
         # 如果沒有參數才會跳轉到 ClientBackURL
-        'ClientBackURL': reverse('order:result'), # 或是交易失敗時的「返回商店」連結也會導到這裡
+        'ClientBackURL': request.build_absolute_uri(reverse('order:result')), # 或是交易失敗時的「返回商店」連結也會導到這裡
         'ItemURL': '',  # 商品資訊頁面
         'Remark': '交易備註',  # 備註文字
         'ChooseSubPayment': '',
 
         # 結帳成功/失敗後的結果頁面，告知顧客本次的結帳結果
-        'OrderResultURL': reverse('order:result'),
+        'OrderResultURL': request.build_absolute_uri(reverse('order:result')),
         'NeedExtraPaidInfo': 'Y',
         'DeviceSource': '',
         'IgnorePayment': '',
