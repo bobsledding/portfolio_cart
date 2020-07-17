@@ -37,9 +37,9 @@
 						</td>
 						<td>
 						{% if the_order.has_succeed %}
-							已付款
+							<p color="green">已付款</p>
 						{% else %}
-							未付款
+							<p color="red">未付款</p>
 						{% endif %}
 						</td>
 						<td>
@@ -52,82 +52,43 @@
 							訂單不可取消
 						</td>
 					</tr>
+					{% if the_order.get_deserialized_cart %}
+					<tr>
+						<td colspan="7">
+							<table>
+								<tr>
+									<th>
+										商品
+									</th>
+									<th>
+										單價
+									</th>
+									<th>
+										數量
+									</th>
+								</tr>
+							{% for cartitem in the_order.get_deserialized_cart %}
+								<tr>
+									<td>
+										{{ cartitem.temp_title }}
+									</td>
+									<td>
+										{{ cartitem.temp_price }}
+									</td>
+									<td>
+										{{ cartitem.quantity }}
+									</td>
+								</tr>
+							{% endfor %}
+							</table>
+						</td>
+					</tr>
+					{% endif %}
 				{% endfor %}
 				</tbody>
 			</table>
-			<script type="text/javascript">
-				function getCookie(name) {
-					let cookieValue = null;
-					if (document.cookie && document.cookie !== '') {
-						const cookies = document.cookie.split(';');
-						for (let i = 0; i < cookies.length; i++) {
-							const cookie = cookies[i].trim();
-							// Does this cookie string begin with the name we want?
-							if (cookie.substring(0, name.length + 1) === (name + '=')) {
-								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-								break;
-							}
-						}
-					}
-					return cookieValue;
-				}
-				const csrftoken = getCookie('csrftoken');
-				function csrfSafeMethod(method) {
-					// these HTTP methods do not require CSRF protection
-					return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-				}
-				$.ajaxSetup({
-					beforeSend: function(xhr, settings) {
-						if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-							xhr.setRequestHeader("X-CSRFToken", csrftoken);
-						}
-					},
-					url: "{% url 'cart:remove' %}",
-					type: "POST"
-				});
-				$(document).ready(function(){
-					$(".remove_from_cart_button").click(function(event){
-						var target_id = $(this).attr('data-cpid');
-						$.ajax({
-							data: {
-								"cpid": target_id,
-							}
-						}).done(function(data) {
-							if(data.success){
-								if(!alert("刪除成功")){window.location.reload();}
-							}else{
-								if(!alert("出現錯誤")){window.location.reload();};
-							}
-						}).fail(function() {
-							if(!alert("出現錯誤")){window.location.reload();};
-						});
-					});
-				});
-			</script>
-			<hr>
-			<p class="cart-total right">
-				<strong>總計:</strong>
-				{% if user.cart.has_invalid %}
-				<del style="color:red;">{{ user.cart.get_total|intcomma:False }}</del>
-				<br>
-					{{ user.cart.get_product_total|intcomma:False }}
-				<br>
-				<strong style="color:red;">請先刪除價格異動或庫存不足商品再進行結帳</strong>
-				{% else %}
-				{{ user.cart.get_total|intcomma:False }}
-				{% endif %}
-			</p>
-			<hr/>
-			<p class="buttons center">
-				<form action="{% url 'cart:clear' %}" method="GET">
-					<button class="btn" type="submit">清空購物車</button>
-				</form>
-				<form action="{% url 'order:ecpay_view' %}" method="GET">
-					<button class="btn btn-inverse" type="submit" id="checkout">前往付款</button>
-				</form>
-			</p>
 			{% else %}
-			<strong>購物車裡沒有任何商品，快去選購！</strong>
+			<strong>尚無訂單，快去選購！</strong>
 			{% endif %}
 		</div>
 		<div class="span3 col">

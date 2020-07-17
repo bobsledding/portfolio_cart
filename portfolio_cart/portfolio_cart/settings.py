@@ -29,7 +29,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '192.168.1.2',
-    '114.41.109.151'
+    '114.41.109.151',
+    'desktop-rmaoai7.router',
 ]
 
 
