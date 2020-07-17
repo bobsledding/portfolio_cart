@@ -6,6 +6,7 @@ from .models import Order, Payment
 from cart.models import Cart
 from django.core import serializers
 from django.db.models import F
+from django.urls import reverse
 
 # Create your views here.
 
@@ -13,6 +14,8 @@ def ecpay_view(request):
     the_cart = request.user.cart
     if the_cart.has_invalid():
         return render(request, 'cart/index.html', {'gg_alert': '購物車內有價格異動或缺貨商品！'})
+    if not the_cart.cart_product_set.all():
+        return render(request, 'cart/index.html', {'gg_alert': '購物車內無商品！'})
     # 建立訂單
     cart_total = the_cart.get_total()
     product_title_list = []
@@ -37,21 +40,27 @@ def ecpay_view(request):
     )
     # clear cart
     the_cart.clear_cart()
-
     return HttpResponse(main(the_order.id,request))
+
+def pay_from_index(request):
+    pass
 
 @csrf_exempt
 def result(request):
-    return HttpResponse('' + request.POST['RtnMsg']+'____'+request.POST['CheckMacValue'])
+    post_data = request.POST.dict()
+    alert_msg = '交易成功！' if int(post_data['RtnCode']) == 1 else '交易失敗！'
+    html = ('<script>alert("' + alert_msg +'");' +
+           'window.location.replace("' + reverse('order:index') + '");</script>')
+
+    return HttpResponse(html)
 
 def index(request):
 
-    orders = request.user.order_set.all()
+    orders = request.user.order_set.all().order_by('-datetime_create')
     return render(request, 'order/index.html', {'orders': orders})
 
 @csrf_exempt
 def receive_from_ecpay(request):
-    print('進入view了')
     post_data = request.POST.dict()
     merchant_trade_no = post_data['MerchantTradeNo']
     if is_check_mac_value_match(post_data):
@@ -60,7 +69,6 @@ def receive_from_ecpay(request):
             if int(post_data['RtnCode']) == 1:
                 the_payment.is_success = True
                 the_payment.save()
-                print('交易成功！')
 
         except Payment.DoesNotExist:
             print('付款紀錄不存在！')
