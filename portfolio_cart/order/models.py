@@ -36,7 +36,12 @@ class Order(models.Model):
         return False
 
     def get_deserialized_cart(self):
-        return serializers.deserialize("json", self.serialized_cart)
+        deserialized_cart = serializers.deserialize("json", self.serialized_cart)
+        cartitem_list = []
+        for cartitem in deserialized_cart:
+            cartitem_list.append(cartitem.object)
+
+        return cartitem_list
 
 class Payment(models.Model):
 
