@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="span9">
 			<h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
-			{% if orders %}
+			{% if user.order_set.all %}
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -24,7 +24,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				{% for the_order in orders %}
+				{% for the_order in user.order_set.all %}
 					<tr>
 						<td style="width:100px">
 						{{ the_order.order_no }}
@@ -37,9 +37,10 @@
 						</td>
 						<td>
 						{% if the_order.has_succeed %}
-							<p color="green">已付款</p>
+							<p style="color: green;">已付款</p>
 						{% else %}
-							<p color="red">未付款</p>
+							<p style="color: red;">未付款</p>
+							(<a href="{% url 'order:pay_from_index' the_order.id %}">前往付款</a>)
 						{% endif %}
 						</td>
 						<td>
@@ -49,7 +50,9 @@
 							不可退貨
 						</td>
 						<td>
-							訂單不可取消
+						{% if not the_order.has_succeed %}
+							(<a style="color: red;" href="{% url 'order:cancel' the_order.id %}">取消訂單</a>)
+						{% endif %}
 						</td>
 					</tr>
 					{% if the_order.get_deserialized_cart %}

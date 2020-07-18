@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .create_order_credit import main, is_check_mac_value_match
 from .models import Order, Payment
@@ -42,22 +42,29 @@ def ecpay_view(request):
     the_cart.clear_cart()
     return HttpResponse(main(the_order.id,request))
 
-def pay_from_index(request):
-    pass
+def pay_from_index(request, order_id):
+    queryset = Order.objects.filter(user=request.user)
+    the_order = get_object_or_404(queryset, pk=order_id)
+    if the_order.has_succeed():
+        return render(request, 'order/index.html',{'gg_alert': '這筆訂單已經付款過囉！'})
+
+    the_payment = Payment.objects.create(
+        order = the_order,
+        trade_no = the_order.generate_trade_no(),
+    )
+    return HttpResponse(main(the_order.id,request))
 
 @csrf_exempt
 def result(request):
     post_data = request.POST.dict()
-    alert_msg = '交易成功！' if int(post_data['RtnCode']) == 1 else '交易失敗！'
-    html = ('<script>alert("' + alert_msg +'");' +
-           'window.location.replace("' + reverse('order:index') + '");</script>')
-
-    return HttpResponse(html)
+    alert_msg = '交易失敗！'
+    if is_check_mac_value_match(post_data):
+        if int(post_data['RtnCode']) == 1:
+            alert_msg = '交易成功！'
+    return render(request, 'order/index.html',{'gg_alert': alert_msg})
 
 def index(request):
-
-    orders = request.user.order_set.all().order_by('-datetime_create')
-    return render(request, 'order/index.html', {'orders': orders})
+    return render(request, 'order/index.html')
 
 @csrf_exempt
 def receive_from_ecpay(request):
@@ -77,3 +84,14 @@ def receive_from_ecpay(request):
     else:
         raise Http404("你他媽想搞事？")
 
+def cancel(request, order_id):
+    queryset = Order.objects.filter(user=request.user)
+    the_order = get_object_or_404(queryset, pk=order_id)
+    alert_msg = '刪除訂單失敗！'
+    if the_order.has_succeed():
+        alert_msg = '已付款的訂單不能取消！'
+        return render(request, 'order/index.html', {'gg_alert': alert_msg})
+    if the_order.delete():
+        alert_msg = '取消訂單成功！'
+
+    return render(request, 'order/index.html', {'gg_alert': alert_msg})
