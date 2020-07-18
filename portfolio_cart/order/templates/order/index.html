@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<section class="header_text sub">
+<img class="pageBanner" src="{% static 'themes/images/pageBanner.png' %}" alt="New products" >
+	<h4><span>Shopping Cart</span></h4>
+</section>
+<section class="main-content">
+	<div class="row">
+		<div class="span9">
+			<h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
+			{% if orders %}
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>訂單編號</th>
+						<th>日期</th>
+						<th>總價</th>
+						<th>付款</th>
+						<th>配送狀態</th>
+						<th>退貨</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for the_order in orders %}
+					<tr>
+						<td style="width:100px">
+						{{ the_order.order_no }}
+						</td>
+						<td>
+						{{ the_order.datetime_create }}
+						</td>
+						<td>
+						${{ the_order.total_amount|intcomma:False }}
+						</td>
+						<td>
+						{% if the_order.has_succeed %}
+							<p color="green">已付款</p>
+						{% else %}
+							<p color="red">未付款</p>
+						{% endif %}
+						</td>
+						<td>
+							未出貨
+						</td>
+						<td>
+							不可退貨
+						</td>
+						<td>
+							訂單不可取消
+						</td>
+					</tr>
+					{% if the_order.get_deserialized_cart %}
+					<tr>
+						<td colspan="7">
+							<table>
+								<tr>
+									<th>
+										商品
+									</th>
+									<th>
+										單價
+									</th>
+									<th>
+										數量
+									</th>
+								</tr>
+							{% for cartitem in the_order.get_deserialized_cart %}
+								<tr>
+									<td>
+										{{ cartitem.temp_title }}
+									</td>
+									<td>
+										{{ cartitem.temp_price }}
+									</td>
+									<td>
+										{{ cartitem.quantity }}
+									</td>
+								</tr>
+							{% endfor %}
+							</table>
+						</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<strong>尚無訂單，快去選購！</strong>
+			{% endif %}
+		</div>
+		<div class="span3 col">
+		</div>
+	</div>
+</section>
+{% endblock %}

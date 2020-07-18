@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from products.models import Product
+from django.urls import reverse
 
 def index(request):
     latest_products = Product.objects.order_by('-datetime_create')[:8]
