@@ -25,12 +25,19 @@ SECRET_KEY = 'btuutm%k)tdjcw&*yysea9=h5@h_@j*v&cvk^2gn(jgrdr-@9^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '192.168.1.2',
+    '114.41.109.151',
+    'desktop-rmaoai7.router',
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'order.apps.OrderConfig',
     'cart.apps.CartConfig',
     'products.apps.ProductsConfig',
     'django.contrib.admin',
