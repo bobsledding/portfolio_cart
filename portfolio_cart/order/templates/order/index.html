@@ -40,7 +40,11 @@
 							<p style="color: green;">已付款</p>
 						{% else %}
 							<p style="color: red;">未付款</p>
-							(<a href="{% url 'order:pay_from_index' the_order.id %}">前往付款</a>)
+							<form action="{% url 'order:pay_from_index'%}" method="POST">
+								{% csrf_token %}
+								<input name="order_id" type="hidden" value="{{ the_order.id }}">
+								<button type="submit">前往付款</button>
+							</form>
 						{% endif %}
 						</td>
 						<td>
@@ -51,7 +55,11 @@
 						</td>
 						<td>
 						{% if not the_order.has_succeed %}
-							(<a style="color: red;" href="{% url 'order:cancel' the_order.id %}">取消訂單</a>)
+							<form action="{% url 'order:cancel'%}" method="POST">
+								{% csrf_token %}
+								<input name="order_id" type="hidden" value="{{ the_order.id }}">
+								<button type="submit">取消訂單</button>
+							</form>
 						{% endif %}
 						</td>
 					</tr>

@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from .create_order_credit import main, is_check_mac_value_match
 from .models import Order, Payment
 from cart.models import Cart
@@ -10,6 +11,12 @@ from django.urls import reverse
 
 # Create your views here.
 
+@login_required
+def index(request):
+    return render(request, 'order/index.html')
+
+@login_required
+@require_POST
 def ecpay_view(request):
     the_cart = request.user.cart
     if the_cart.has_invalid():
@@ -42,7 +49,10 @@ def ecpay_view(request):
     the_cart.clear_cart()
     return HttpResponse(main(the_order.id,request))
 
-def pay_from_index(request, order_id):
+@login_required
+@require_POST
+def pay_from_index(request):
+    order_id = request.POST['order_id']
     queryset = Order.objects.filter(user=request.user)
     the_order = get_object_or_404(queryset, pk=order_id)
     if the_order.has_succeed():
@@ -54,6 +64,21 @@ def pay_from_index(request, order_id):
     )
     return HttpResponse(main(the_order.id,request))
 
+@login_required
+@require_POST
+def cancel(request):
+    order_id = request.POST['order_id']
+    queryset = Order.objects.filter(user=request.user)
+    the_order = get_object_or_404(queryset, pk=order_id)
+    alert_msg = '刪除訂單失敗！'
+    if the_order.has_succeed():
+        alert_msg = '已付款的訂單不能取消！'
+        return render(request, 'order/index.html', {'gg_alert': alert_msg})
+    if the_order.delete():
+        alert_msg = '取消訂單成功！'
+
+    return render(request, 'order/index.html', {'gg_alert': alert_msg})
+
 @csrf_exempt
 def result(request):
     post_data = request.POST.dict()
@@ -62,9 +87,6 @@ def result(request):
         if int(post_data['RtnCode']) == 1:
             alert_msg = '交易成功！'
     return render(request, 'order/index.html',{'gg_alert': alert_msg})
-
-def index(request):
-    return render(request, 'order/index.html')
 
 @csrf_exempt
 def receive_from_ecpay(request):
@@ -83,15 +105,3 @@ def receive_from_ecpay(request):
         return HttpResponse('1|OK')
     else:
         raise Http404("你他媽想搞事？")
-
-def cancel(request, order_id):
-    queryset = Order.objects.filter(user=request.user)
-    the_order = get_object_or_404(queryset, pk=order_id)
-    alert_msg = '刪除訂單失敗！'
-    if the_order.has_succeed():
-        alert_msg = '已付款的訂單不能取消！'
-        return render(request, 'order/index.html', {'gg_alert': alert_msg})
-    if the_order.delete():
-        alert_msg = '取消訂單成功！'
-
-    return render(request, 'order/index.html', {'gg_alert': alert_msg})
