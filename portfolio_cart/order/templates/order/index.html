@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="span9">
 			<h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
-			{% if orders %}
+			{% if user.order_set.all %}
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -24,7 +24,7 @@
 					</tr>
 				</thead>
 				<tbody>
-				{% for the_order in orders %}
+				{% for the_order in user.order_set.all %}
 					<tr>
 						<td style="width:100px">
 						{{ the_order.order_no }}
@@ -37,9 +37,14 @@
 						</td>
 						<td>
 						{% if the_order.has_succeed %}
-							<p color="green">已付款</p>
+							<p style="color: green;">已付款</p>
 						{% else %}
-							<p color="red">未付款</p>
+							<p style="color: red;">未付款</p>
+							<form action="{% url 'order:pay_from_index'%}" method="POST">
+								{% csrf_token %}
+								<input name="order_id" type="hidden" value="{{ the_order.id }}">
+								<button type="submit">前往付款</button>
+							</form>
 						{% endif %}
 						</td>
 						<td>
@@ -49,7 +54,13 @@
 							不可退貨
 						</td>
 						<td>
-							訂單不可取消
+						{% if not the_order.has_succeed %}
+							<form action="{% url 'order:cancel'%}" method="POST">
+								{% csrf_token %}
+								<input name="order_id" type="hidden" value="{{ the_order.id }}">
+								<button type="submit">取消訂單</button>
+							</form>
+						{% endif %}
 						</td>
 					</tr>
 					{% if the_order.get_deserialized_cart %}

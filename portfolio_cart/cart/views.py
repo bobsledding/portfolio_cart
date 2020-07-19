@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from products.models import Product
 from .models import Cart, Cart_product
 
 # Create your views here.
-
+@login_required
 def index(request):
     return render(request, 'cart/index.html')
 
+@login_required
 @require_POST
 def add_to_cart(request):
 
@@ -52,6 +54,7 @@ def add_to_cart(request):
 
     return JsonResponse(response_dict)
 
+@login_required
 @require_POST
 def remove_from_cart(request):
 
@@ -73,6 +76,7 @@ def remove_from_cart(request):
 
     return JsonResponse(response_dict)
 
+@login_required
 def clear_cart(request):
 
     request.user.cart.clear_cart()
