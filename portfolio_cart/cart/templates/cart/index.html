@@ -156,9 +156,10 @@
 					信用卡號請填4311-9522-2222-2222<br/>
 					有效月年請填未來某月某年(例:12 24)<br/>
 					安全碼請填222<br/>
-					底下的Pay now按鈕請按兩次。
+					底下的「立即付款 Pay now」按鈕請按兩次。
 				</p>
-				<form action="{% url 'order:ecpay_view' %}" method="GET">
+				<form action="{% url 'order:ecpay_view' %}" method="POST">
+					{% csrf_token %}
 					<button class="btn btn-inverse" type="submit" id="checkout">前往付款</button>
 				</form>
 			</p>
