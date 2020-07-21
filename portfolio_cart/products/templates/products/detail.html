@@ -71,8 +71,12 @@
 											"product_id": {{ product.id }},
 											"quantity": quantity,
 										}
-									}).done(function(data) {
+									}).done(function(data, textStatus, xhr) {
+										console.log(xhr.status);
 										alert(data.message);
+										if (data.success == -1) {
+											window.location.href = "{% url 'login' %}"
+										}
 									}).fail(function() {
 										alert("error");
 									});
