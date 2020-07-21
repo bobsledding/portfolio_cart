@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -7,7 +7,6 @@ from .create_order_credit import main, is_check_mac_value_match
 from .models import Order, Payment
 from cart.models import Cart
 from django.core import serializers
-from django.db.models import F
 from django.urls import reverse
 
 # Create your views here.

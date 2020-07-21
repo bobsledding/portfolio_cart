@@ -10,18 +10,22 @@ from .models import Cart, Cart_product
 def index(request):
     return render(request, 'cart/index.html')
 
-@login_required
 @require_POST
 def add_to_cart(request):
+
+    response_dict = {
+        'message' : '出現錯誤',
+        'success' : 0,
+    }
+    if not request.user.is_authenticated:
+        response_dict['message'] = '登入才能購物！'
+        response_dict['success'] = -1
+        return JsonResponse(response_dict)
 
     product_id = request.POST['product_id']
     quantity = int(request.POST['quantity'])
     user_cart = request.user.cart
     the_cart_product = None
-    response_dict = {
-        'message' : '',
-        'success' : 0,
-    }
     # 檢查該商品是否存在.
     the_product = None
     try:

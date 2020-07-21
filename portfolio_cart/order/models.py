@@ -6,14 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete
 from django.db.models import F
-# Create your models here.
-"""
-在order必須保存的資訊
-時間
-付款狀態
-商品、價格
-
-"""
 
 class Order(models.Model):
     class Meta:
