@@ -37,7 +37,7 @@
 			<div class="row">
 				<div class="span4">
 					<form method="GET" class="search_form" action="{% url 'products:search' %}">
-						<input id="keyword" name="keyword" type="text" class="input-block-level search-query" Placeholder="輸入關鍵字，例如:小..">
+						<input id="keyword" name="keyword" type="text" class="input-block-level search-query" style="color: black;" Placeholder="輸入關鍵字，例如:小..">
 					</form>
 				</div>
 				<div class="span8">
@@ -71,7 +71,7 @@
 			</section>
             {% block content %}
             {% endblock %}
-			<section class="our_client">
+			<!--<section class="our_client">
 				<h4 class="title"><span class="text">Manufactures</span></h4>
 				<div class="row">
 					<div class="span2">
@@ -93,31 +93,31 @@
 						<a href="#"><img alt="" src="{% static 'themes/images/clients/4.png' %}"></a>
 					</div>
 				</div>
-			</section>
+			</section>-->
 			<section id="footer-bar">
 				<div class="row">
 					<div class="span3">
-						<h4>Navigation</h4>
+						<h4>導覽</h4>
 						<ul class="nav">
-							<li><a href="{% url 'index' %}">Homepage</a></li>
-							<li><a href="./about.html">About Us</a></li>
-							<li><a href="./contact.html">Contac Us</a></li>
-							<li><a href="./cart.html">Your Cart</a></li>
-							<li><a href="./register.html">Login</a></li>
+							<li><a href="{% url 'index' %}">首頁</a></li>
+							<li><a href="{% url 'about' %}">關於作者</a></li>
 						</ul>
 					</div>
 					<div class="span4">
-						<h4>My Account</h4>
+						<h4>帳戶</h4>
 						<ul class="nav">
-							<li><a href="#">My Account</a></li>
-							<li><a href="#">Order History</a></li>
-							<li><a href="#">Wish List</a></li>
-							<li><a href="#">Newsletter</a></li>
+						{% if user.is_authenticated %}
+							<li><a href="{% url 'cart:index' %}">購物車</a></li>
+							<li><a href="{% url 'order:index' %}">查訂單</a></li>
+							<li><a href="{% url 'logout' %}">登出</a></li>
+						{% else %}
+							<li><a href="{% url 'login' %}">登入</a></li>
+						{% endif %}
 						</ul>
 					</div>
 					<div class="span5">
 						<p class="logo"><img src="{% static 'themes/images/logo.png' %}" class="site_logo" alt=""></p>
-						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. the  Lorem Ipsum has been the industry's standard dummy text ever since the you.</p>
+						<p>本網站是用Django實作購物網站與串接金流API 的練習，未來也會陸續加入其它新學到的技術及元素。</p>
 					</div>
 				</div>
 			</section>
