@@ -3,6 +3,9 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.utils.translation import gettext_lazy as _
+from django.dispatch import receiver
+from django.db.models.signals import post_save, pre_delete
+from django.db.models import F
 # Create your models here.
 """
 在order必須保存的資訊
@@ -46,6 +49,23 @@ class Order(models.Model):
             cartitem_list.append(cartitem.object)
 
         return cartitem_list
+
+@receiver(post_save, sender=Order)
+def deduct_product_stock(sender, instance, created, **kwargs):
+    if created:
+        deserialized_cart = instance.get_deserialized_cart()
+        for cart_item in deserialized_cart:
+            the_product = cart_item.product
+            the_product.stock = F('stock') - cart_item.quantity
+            the_product.save()
+
+@receiver(pre_delete, sender=Order)
+def return_product_stock(sender, instance, **kwargs):
+    deserialized_cart = instance.get_deserialized_cart()
+    for cart_item in deserialized_cart:
+        the_product = cart_item.product
+        the_product.stock = F('stock') + cart_item.quantity
+        the_product.save()
 
 class Payment(models.Model):
 
