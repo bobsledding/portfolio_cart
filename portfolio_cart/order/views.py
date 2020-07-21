@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from .create_order_credit import main, is_check_mac_value_match
 from .models import Order, Payment
 from cart.models import Cart
@@ -29,12 +30,10 @@ def ecpay_view(request):
 
     for the_cart_product in the_cart.cart_product_set.all():
         product_title_list.append(the_cart_product.temp_title)
-        the_product = the_cart_product.product
-        the_product.stock = F('stock') - the_cart_product.quantity
-        the_product.save()
 
     titles_with_sharp = '#'.join(product_title_list)
     the_serialized_cart = serializers.serialize("json", the_cart.cart_product_set.all())
+
     the_order = Order.objects.create(
         user = request.user,
         serialized_cart = the_serialized_cart,
@@ -80,13 +79,14 @@ def cancel(request):
     return render(request, 'order/index.html', {'gg_alert': alert_msg})
 
 @csrf_exempt
+@require_POST
 def result(request):
     post_data = request.POST.dict()
     alert_msg = '交易失敗！'
     if is_check_mac_value_match(post_data):
         if int(post_data['RtnCode']) == 1:
             alert_msg = '交易成功！'
-    return render(request, 'order/index.html',{'gg_alert': alert_msg})
+    return render(request, 'redirect.html',{'gg_alert': alert_msg, 'gg_redirect': request.build_absolute_uri(reverse('order:index'))})
 
 @csrf_exempt
 def receive_from_ecpay(request):
