@@ -85,7 +85,7 @@
 						<div class="carousel-inner">
 							<div class="active item">
 								<ul class="thumbnails">
-								{% for product in feature_products|slice:":4" %}
+								{% for product in latest_products|slice:":4" %}
 									<li class="span3">
 										<div class="product-box">
 											<span class="sale_tag"></span>
@@ -100,7 +100,7 @@
 							</div>
 							<div class="item">
 								<ul class="thumbnails">
-								{% for product in feature_products|slice:"4:8" %}
+								{% for product in latest_products|slice:"4:8" %}
 									<li class="span3">
 										<div class="product-box">
 											<p><a href="{% url 'products:detail' product.id %}"><img src="{{ product.image_set.first.file.url }}" alt="" /></a></p>
