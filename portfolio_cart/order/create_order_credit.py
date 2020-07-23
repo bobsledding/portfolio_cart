@@ -4,7 +4,7 @@ from .models import Order
 # 第一個需要修改的，就是 SDK 路徑
 spec = importlib.util.spec_from_file_location(
     "ecpay_payment_sdk",  # SDK檔名不用改
-    "order/ecpay_payment_sdk.py"  # 改成 django app name/sdk name，
+    "./ecpay_payment_sdk.py"  # 改成 django app name/sdk name，
 )
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
