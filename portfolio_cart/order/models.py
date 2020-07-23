@@ -33,6 +33,9 @@ class Order(models.Model):
         if self.payment_set.filter(is_success=True):
             return True
         return False
+    has_succeed.admin_order_field = 'datetime_create'
+    has_succeed.boolean = True
+    has_succeed.short_description = '已付款?'
 
     def get_deserialized_cart(self):
         deserialized_cart = serializers.deserialize("json", self.serialized_cart)
