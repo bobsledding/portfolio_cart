@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath portfolio_cart portfolio_cart.wsgi
+web: newrelic-admin run-program gunicorn --pythonpath portfolio_cart portfolio_cart.wsgi
