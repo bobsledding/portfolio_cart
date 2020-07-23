@@ -20,7 +20,10 @@ class Image(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     file = models.ImageField('檔案',upload_to='product_images')
     priority = models.PositiveSmallIntegerField('排序',default=0)
-    description = models.CharField('照片簡述',max_length=200,default='')
+    description = models.CharField('照片簡述',max_length=200,default='',blank=True,null=True)
+
+    class Meta:
+        ordering = ['priority']
 
 @receiver(models.signals.post_delete, sender=Image)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

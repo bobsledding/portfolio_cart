@@ -1,4 +1,4 @@
-# portfolio_cart/.gitignore
+# .gitignore
 
 venv
 *.pyc
@@ -6,3 +6,6 @@ __pycache__
 db.sqlite3
 .idea
 media
+
+# exception to the rule
+!.gitignore
