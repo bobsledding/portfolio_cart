@@ -420,6 +420,7 @@ section.navbar{
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-bottom:1px solid #eee;
+	overflow:hidden;
 }
 .product-box span.sale_tag {
 	background: url(../images/sprites.png) no-repeat scroll 0 0 transparent;
@@ -452,6 +453,8 @@ section.navbar{
 	font-weight:bold;
 	font-size:11px;
 	margin:15px 0 0px 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 .product-box a.category{
 	color:#eb4800;

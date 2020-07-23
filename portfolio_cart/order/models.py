@@ -85,4 +85,5 @@ class Payment(models.Model):
     datetime_edit = models.DateTimeField('修改日期',auto_now=True)
 
     class Meta:
+        ordering = ['-datetime_create']
         get_latest_by = "datetime_create"

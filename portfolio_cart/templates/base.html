@@ -63,7 +63,7 @@
 					<nav id="menu" class="pull-right">
 						<ul>
 						{% for cat in product_cats %}
-							<li><a href="{% url 'products:cat' cat %}">{{ cat }}</a></li>
+							<li><a href="{% url 'products:cat' cat|urlencode:"" %}">{{ cat }}</a></li>
 						{% endfor %}
 						</ul>
 					</nav>
