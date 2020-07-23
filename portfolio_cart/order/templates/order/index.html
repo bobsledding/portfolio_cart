@@ -9,7 +9,7 @@
 <section class="main-content">
 	<div class="row">
 		<div class="span9">
-			<h4 class="title"><span class="text"><strong>Your</strong> Cart</span></h4>
+			<h4 class="title"><span class="text"><strong>Your</strong> Orders</span></h4>
 			{% if user.order_set.all %}
 			<table class="table table-striped">
 				<thead>
@@ -98,6 +98,13 @@
 				{% endfor %}
 				</tbody>
 			</table>
+			<p color="red">
+				此交易為測試交易<br/>
+				信用卡號請填4311-9522-2222-2222<br/>
+				有效月年請填未來某月某年(例:12 24)<br/>
+				安全碼請填222<br/>
+				底下的「立即付款 Pay now」按鈕請按兩次。
+			</p>
 			{% else %}
 			<strong>尚無訂單，快去選購！</strong>
 			{% endif %}

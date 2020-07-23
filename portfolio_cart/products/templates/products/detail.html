@@ -11,7 +11,7 @@
 		<div class="span9">
 			<div class="row">
 				<div class="span4">
-					<a href="{{ product.image_set.first.file.url }}" class="thumbnail" data-fancybox-group="group1" title="{{ product.image_set.first.description }}"><img alt="" src="{{ product.image_set.first.file.url }}"></a>
+					<a href="{{ product.image_set.first.file.url }}" class="thumbnail" data-fancybox-group="group1" title="{{ product.image_set.first.description|default_if_none:"" }}"><img alt="" src="{{ product.image_set.first.file.url }}"></a>
 					<ul class="thumbnails small">
     				{% for image in product.image_set.all|slice:"1:" %}
 						<li class="span1">
@@ -26,13 +26,13 @@
 				<div class="span5">
 					{% if product.stock > 0 %}
 					<form class="form-inline">
-						<label>Qty:</label>
+						<label>數量:</label>
 						<select id="add_quantity">
     					{% for i in stock_range %}
 							<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
 						{% endfor %}
 						</select>
-						<button id="submit" class="btn btn-inverse" type="button">Add to cart</button>
+						<button id="submit" class="btn btn-inverse" type="button">加入購物車</button>
 						<script type="text/javascript">
 							function getCookie(name) {
 								let cookieValue = null;
@@ -92,148 +92,15 @@
 			<div class="row">
 				<div class="span9">
 					<ul class="nav nav-tabs" id="myTab">
-						<li class="active"><a href="#home">Description</a></li>
+						<li class="active"><a href="#home">商品說明</a></li>
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane active" id="home">{{ product.description|linebreaks }}</div>
-					</div>
-				</div>
-				<div class="span9">
-					<br>
-					<h4 class="title">
-						<span class="pull-left"><span class="text"><strong>Related</strong> Products</span></span>
-						<span class="pull-right">
-							<a class="left button" href="#myCarousel-1" data-slide="prev"></a><a class="right button" href="#myCarousel-1" data-slide="next"></a>
-						</span>
-					</h4>
-					<div id="myCarousel-1" class="carousel slide">
-						<div class="carousel-inner">
-							<div class="active item">
-								<ul class="thumbnails listing-products">
-									<li class="span3">
-										<div class="product-box">
-											<span class="sale_tag"></span>
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/6.jpg' %}"></a><br/>
-											<a href="product_detail.html" class="title">Wuam ultrices rutrum</a><br/>
-											<a href="#" class="category">Suspendisse aliquet</a>
-											<p class="price">$341</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<span class="sale_tag"></span>
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/5.jpg' %}"></a><br/>
-											<a href="product_detail.html" class="title">Fusce id molestie massa</a><br/>
-											<a href="#" class="category">Phasellus consequat</a>
-											<p class="price">$341</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/4.jpg' %}"></a><br/>
-											<a href="product_detail.html" class="title">Praesent tempor sem</a><br/>
-											<a href="#" class="category">Erat gravida</a>
-											<p class="price">$28</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-							<div class="item">
-								<ul class="thumbnails listing-products">
-									<li class="span3">
-										<div class="product-box">
-											<span class="sale_tag"></span>
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/1.jpg' %}"></a><br/>
-											<a href="product_detail.html" class="title">Fusce id molestie massa</a><br/>
-											<a href="#" class="category">Phasellus consequat</a>
-											<p class="price">$341</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/2.jpg' %}"></a><br/>
-											<a href="product_detail.html">Praesent tempor sem</a><br/>
-											<a href="#" class="category">Erat gravida</a>
-											<p class="price">$28</p>
-										</div>
-									</li>
-									<li class="span3">
-										<div class="product-box">
-											<span class="sale_tag"></span>
-											<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/3.jpg' %}"></a><br/>
-											<a href="product_detail.html" class="title">Wuam ultrices rutrum</a><br/>
-											<a href="#" class="category">Suspendisse aliquet</a>
-											<p class="price">$341</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
+						<div class="tab-pane active" id="home">{{ product.description|linebreaks|default_if_none:"" }}</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="span3 col">
-			<div class="block">
-				<h4 class="title">
-					<span class="pull-left"><span class="text">Randomize</span></span>
-					<span class="pull-right">
-						<a class="left button" href="#myCarousel" data-slide="prev"></a><a class="right button" href="#myCarousel" data-slide="next"></a>
-					</span>
-				</h4>
-				<div id="myCarousel" class="carousel slide">
-					<div class="carousel-inner">
-						<div class="active item">
-							<ul class="thumbnails listing-products">
-								<li class="span3">
-									<div class="product-box">
-										<span class="sale_tag"></span>
-										<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/7.jpg' %}"></a><br/>
-										<a href="product_detail.html" class="title">Fusce id molestie massa</a><br/>
-										<a href="#" class="category">Suspendisse aliquet</a>
-										<p class="price">$261</p>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class="item">
-							<ul class="thumbnails listing-products">
-								<li class="span3">
-									<div class="product-box">
-										<a href="product_detail.html"><img alt="" src="{% static 'themes/images/ladies/8.jpg' %}"></a><br/>
-										<a href="product_detail.html" class="title">Tempor sem sodales</a><br/>
-										<a href="#" class="category">Urna nec lectus mollis</a>
-										<p class="price">$134</p>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="block">
-				<h4 class="title"><strong>Best</strong> Seller</h4>
-				<ul class="small-product">
-					<li>
-						<a href="#" title="Praesent tempor sem sodales">
-							<img src="{% static 'themes/images/ladies/1.jpg' %}" alt="Praesent tempor sem sodales">
-						</a>
-						<a href="#">Praesent tempor sem</a>
-					</li>
-					<li>
-						<a href="#" title="Luctus quam ultrices rutrum">
-							<img src="{% static 'themes/images/ladies/2.jpg' %}" alt="Luctus quam ultrices rutrum">
-						</a>
-						<a href="#">Luctus quam ultrices rutrum</a>
-					</li>
-					<li>
-						<a href="#" title="Fusce id molestie massa">
-							<img src="{% static 'themes/images/ladies/3.jpg' %}" alt="Fusce id molestie massa">
-						</a>
-						<a href="#">Fusce id molestie massa</a>
-					</li>
-				</ul>
-			</div>
 		</div>
 	</div>
 </section>

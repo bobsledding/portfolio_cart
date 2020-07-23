@@ -5,10 +5,10 @@ from django.utils.html import mark_safe
 
 class ImageInline(admin.StackedInline):
     model = Image
-    extra = 1
+    extra = 0
     readonly_fields = ["file_image"]
     def file_image(self, obj):
-        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+        return mark_safe('<img src="{url}" width="300"/>'.format(
             url=obj.file.url,
             width=obj.file.width,
             height=obj.file.height,)
