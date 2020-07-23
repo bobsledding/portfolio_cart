@@ -22,6 +22,9 @@ class Image(models.Model):
     priority = models.PositiveSmallIntegerField('排序',default=0)
     description = models.CharField('照片簡述',max_length=200,default='')
 
+    class Meta:
+        ordering = ['priority']
+
 @receiver(models.signals.post_delete, sender=Image)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """
