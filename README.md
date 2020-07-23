@@ -11,7 +11,10 @@
     暫時找不到理想的圖片存取方案，就先全塞在media/product_image裡，全丟給heroku。
 
 專案重點:
+
     1.串金流(ECPay):
+    
         ecpay的sdk放在portfolio_cart/order/
         不過deploy時遇到module path的問題，用pathlib解決。
+        
     2.我再想想
