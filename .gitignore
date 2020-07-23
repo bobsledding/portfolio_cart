@@ -5,6 +5,6 @@ venv
 __pycache__
 db.sqlite3
 .idea
-
+static
 # exception to the rule
 !.gitignore
