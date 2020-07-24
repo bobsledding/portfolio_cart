@@ -47,6 +47,9 @@ class Order(models.Model):
 
 @receiver(post_save, sender=Order)
 def deduct_product_stock(sender, instance, created, **kwargs):
+    # disable the handler during fixture loading
+    if kwargs['raw']:
+        return
     if created:
         deserialized_cart = instance.get_deserialized_cart()
         for cart_item in deserialized_cart:
