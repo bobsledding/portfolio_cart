@@ -30,3 +30,6 @@
 其它:
 
     1.我懶得多一個table來寫分類，所以用context_processor取distinct的分類。
+    
+    
+    2.更新商品照片自動刪除的部分在把media files換到S3時就壞掉了，還在找方法當中。
