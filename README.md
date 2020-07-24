@@ -25,3 +25,8 @@
         
         
     2.我再想想
+
+
+其它:
+
+    1.我懶得多一個table來寫分類，所以用context_processor取distinct的分類。
