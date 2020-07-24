@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'storages',
+    'boto3',
 ]
 
 MIDDLEWARE = [
@@ -134,8 +136,8 @@ STATICFILES_DIRS = [
 ]
 
 #上傳圖片路徑
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediax')
-MEDIA_URL = '/mediax/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
