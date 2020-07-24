@@ -33,3 +33,10 @@
     
     
     2.更新商品照片自動刪除的部分在把media files換到S3時就壞掉了，還在找方法當中。
+
+
+警告:
+
+    ※loaddata會觸發signal
+        在連得上AWS S3的時候進行loaddata會觸發Image的post_save，導致所有圖片被delete。
+        同樣的情況也會發生在Order，導致Product.stock被多扣。
