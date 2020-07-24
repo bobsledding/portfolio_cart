@@ -34,7 +34,8 @@ def s3_delete(id):
         region_name="us-east-2"
     )
     s3 = session.resource("s3")
-    obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAME, "media/"+id)
+    path_to_file = settings.PUBLIC_MEDIA_LOCATION + "/" + id
+    obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAME, path_to_file)
     obj.delete()
 
 @receiver(models.signals.post_delete, sender=Image)
@@ -61,6 +62,9 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     P.S.加上S3 delete
     """
+    # disable the handler during fixture loading
+    if kwargs['raw']:
+        return
     if not instance.pk:
         return False
 
@@ -72,7 +76,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     new_file = instance.file
     if not old_file == new_file:
         if settings.USE_S3:
-            s3_delete(instance.file.name)
+            s3_delete(old_file.name)
         else:
             if os.path.isfile(instance.file.path):
                 os.remove(instance.file.path)
