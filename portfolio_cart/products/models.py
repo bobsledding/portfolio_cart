@@ -31,7 +31,7 @@ def s3_delete(id):
     session = boto3.Session(
         aws_access_key_id = settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY,
-        region_name="us-east-1"
+        region_name="us-east-2"
     )
     s3 = session.resource("s3")
     obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAME, "media/"+id)
