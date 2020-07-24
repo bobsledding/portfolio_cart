@@ -40,3 +40,4 @@
     ※loaddata會觸發signal
         在連得上AWS S3的時候進行loaddata會觸發Image的post_save，導致所有圖片被delete。
         同樣的情況也會發生在Order，導致Product.stock被多扣。
+        (已解決，官方有教，在signal的handler判斷kwargs['raw']是否為True)
