@@ -6,5 +6,6 @@ __pycache__
 db.sqlite3
 .idea
 static
+media
 # exception to the rule
 !.gitignore

@@ -1,6 +1,8 @@
 from django.db import models
 from django.dispatch import receiver
 import os
+import boto3
+from django.conf import settings
 
 # Create your models here.
 class Product(models.Model):
@@ -25,15 +27,30 @@ class Image(models.Model):
     class Meta:
         ordering = ['priority']
 
+def s3_delete(id):
+    session = boto3.Session(
+        aws_access_key_id = settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key = settings.AWS_SECRET_ACCESS_KEY,
+        region_name="us-east-2"
+    )
+    s3 = session.resource("s3")
+    obj = s3.Object(settings.AWS_STORAGE_BUCKET_NAME, "media/"+id)
+    obj.delete()
+
 @receiver(models.signals.post_delete, sender=Image)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """
     Deletes file from filesystem
     when corresponding `MediaFile` object is deleted.
+
+    P.S.加上S3 delete
     """
     if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
+        if settings.USE_S3:
+            s3_delete(instance.file.name)
+        else:
+            if os.path.isfile(instance.file.path):
+                os.remove(instance.file.path)
 
 @receiver(models.signals.pre_save, sender=Image)
 def auto_delete_file_on_change(sender, instance, **kwargs):
@@ -41,6 +58,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     Deletes old file from filesystem
     when corresponding `MediaFile` object is updated
     with new file.
+
+    P.S.加上S3 delete
     """
     if not instance.pk:
         return False
@@ -52,5 +71,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     new_file = instance.file
     if not old_file == new_file:
-        if os.path.isfile(old_file.path):
-            os.remove(old_file.path)
+        if settings.USE_S3:
+            s3_delete(instance.file.name)
+        else:
+            if os.path.isfile(instance.file.path):
+                os.remove(instance.file.path)
