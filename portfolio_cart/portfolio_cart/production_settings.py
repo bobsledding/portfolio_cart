@@ -24,7 +24,7 @@ USE_S3 = True
 if USE_S3:
     # aws settings
     AWS_ACCESS_KEY_ID = "AKIAXRK2KMSGCFG7YH3O"
-    AWS_SECRET_ACCESS_KEY = "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"
+    AWS_SECRET_ACCESS_KEY = "XXXX"
     AWS_STORAGE_BUCKET_NAME = "bobsledding-cart"
     AWS_DEFAULT_ACL = 'public-read'
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
