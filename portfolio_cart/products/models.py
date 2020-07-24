@@ -72,7 +72,7 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     new_file = instance.file
     if not old_file == new_file:
         if settings.USE_S3:
-            s3_delete(instance.file.name)
+            s3_delete(old_file.name)
         else:
             if os.path.isfile(instance.file.path):
                 os.remove(instance.file.path)
