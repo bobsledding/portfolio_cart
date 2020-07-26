@@ -6,6 +6,8 @@ https://bobsledding-cart.herokuapp.com/
 
 環境說明:
 
+    金流串ECPay的測試環境，簡單。
+
     push到heroku，並且利用newrelic持續ping以防free dyno睡著。
     
     deploy到heroku的設定參照django girls(https://djangogirlstaipei.herokuapp.com/tutorials/deploy-to-heroku/?os=windows)
