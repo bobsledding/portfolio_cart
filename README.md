@@ -3,6 +3,10 @@
 
 https://bobsledding-cart.herokuapp.com/
 
+可使用的帳號:
+normaluser
+normalpasswork
+
 
 環境說明:
 
